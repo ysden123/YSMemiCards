@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using YSMemiCardsApp.Data;
+
+namespace YSMemiCardsApp.Controls
+{
+    /// <summary>
+    /// Interaction logic for CardListControl.xaml
+    /// </summary>
+    public partial class CardListControl : UserControl
+    {
+        private readonly ObservableCollection<Card> _cardsViewList;
+        private readonly ICollectionView _cardListView;
+        private bool _changed = false;
+        public CardListControl(Cards cards)
+        {
+            InitializeComponent();
+            _cardsViewList = new ObservableCollection<Card>(cards.CardsList);
+            cardListView.ItemsSource = _cardsViewList;
+            _cardListView = CollectionViewSource.GetDefaultView(_cardsViewList);
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var card = new Card()
+            {
+                CreatedAt = DateTime.Now,
+            };
+
+            var dialog = new CardEditDialog(card)
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                _cardsViewList.Add(card);
+                _cardListView.Refresh();
+                _changed = true;
+            }
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var card = cardListView.SelectedItem as Card;
+            if (card != null)
+            {
+                var dialog = new CardEditDialog(card)
+                {
+                    Owner = Window.GetWindow(this)
+                };
+
+                var result = dialog.ShowDialog();
+                if (result == true)
+                {
+                    _cardListView.Refresh();
+                    _changed = true;
+                    ChangeButtonAvalability();
+                }
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var card = cardListView.SelectedItem as Card;
+            if (card != null)
+            {
+                if (_cardsViewList.Remove(card))
+                {
+                    _cardListView.Refresh();
+                    _changed = true;
+                    ChangeButtonAvalability();
+                }
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cards = new Cards { CardsList = new List<Card>([.. _cardsViewList]) };
+            cards.SaveToFile();
+            _changed = false;
+            _cardListView.Refresh();
+            ChangeButtonAvalability();
+        }
+
+        private void CardListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ChangeButtonAvalability();
+        }
+
+        private void ChangeButtonAvalability()
+        {
+            ButtonSave.IsEnabled = _changed;
+            if (cardListView.SelectedItem == null)
+            {
+                ButtonEdit.IsEnabled = false;
+                ButtonDelete.IsEnabled = false;
+            }
+            else
+            {
+                ButtonEdit.IsEnabled = true;
+                ButtonDelete.IsEnabled = true;
+            }
+        }
+    }
+}

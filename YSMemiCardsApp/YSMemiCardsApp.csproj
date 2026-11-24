@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <ApplicationIcon>YSMemiCardsApp.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="YSMemiCardsApp.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="YSMemiCardsApp.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="common">
+      <HintPath>..\..\common-cs\common\bin\Release\net10.0-windows\common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

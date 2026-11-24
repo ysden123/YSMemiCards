@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="YSMemiCardsApp/YSMemiCardsApp.csproj" Id="49dd874a-9860-4613-a327-e5e250469627" />
+  <Project Path="YSMemiCardsTests/YSMemiCardsTests.csproj" Id="0b29be4c-3b6b-4c4d-9dbb-a0c47c2e5f67" />
+</Solution>
