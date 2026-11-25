@@ -32,5 +32,22 @@ namespace YSMemiCardsApp
         {
             CC.Content = new StudyControl(_cards);
         }
+
+        private void ConfigurationMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            var configuration = Configuration.LoadFromFile() ?? new Configuration();
+
+            var dialog = new ConfigurationDialog()
+            {
+                Owner = Window.GetWindow(this),
+                DataContext = configuration
+            };
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                Configuration.SaveToFile(configuration);
+            }
+        }
     }
 }

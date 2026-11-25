@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using YSMemiCardsApp.Data;
 
 namespace YSMemiCardsApp.Controls
@@ -31,6 +21,7 @@ namespace YSMemiCardsApp.Controls
 
         private void BuildListToStudy(Cards? cards)
         {
+            var configuration = Configuration.LoadFromFile();
             _cardsToStudy = new Cards();
             if (cards == null)
             {
@@ -40,7 +31,15 @@ namespace YSMemiCardsApp.Controls
             foreach (var card in cards.CardsList)
             {
                 // todo: add logic to determine which cards to study
-                _cardsToStudy.CardsList.Add(card);
+                bool shouldStudyCard =
+                    (card.LastTimeUsed == null)
+                    || ((DateTime.Now - card.LastTimeUsed).Value.TotalDays > configuration!.FirstDays && card.Level < DifficultyLevel.Medium)
+                    || ((DateTime.Now - card.LastTimeUsed).Value.TotalDays > configuration!.SecondDays && card.Level < DifficultyLevel.Easy)
+                    || ((DateTime.Now - card.LastTimeUsed).Value.TotalDays > 10);
+                if (shouldStudyCard)
+                {
+                    _cardsToStudy.CardsList.Add(card);
+                }
             }
         }
 
@@ -64,11 +63,6 @@ namespace YSMemiCardsApp.Controls
                 {
                     card.Level = responseDialog.DifficultyLevel;
                     card.LastTimeUsed = DateTime.Now;
-                }
-                else
-                {
-                    // User closed the dialog without selecting a difficulty level
-                    // Handle this case as needed (e.g., skip the card, set a default difficulty level, etc.)
                 }
             }
         }
