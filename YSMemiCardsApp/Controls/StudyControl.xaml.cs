@@ -41,6 +41,10 @@ namespace YSMemiCardsApp.Controls
                     _cardsToStudy.CardsList.Add(card);
                 }
             }
+
+            this.TotalCardsTextBlock.Text = cards.CardsList.Count.ToString();
+            this.CardsToStudyTextBlock.Text = _cardsToStudy.CardsList.Count.ToString();
+            this.StartStudySessionButton.IsEnabled = _cardsToStudy.CardsList.Count > 0;
         }
 
         private void Process()
