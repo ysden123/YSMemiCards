@@ -1,24 +1,33 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using YSMemiCardsApp.Data;
 
 namespace YSMemiCardsApp.Controls
 {
     /// <summary>
-    /// Interaction logic for StudyControl.xaml
+    /// Interaction logic for StudyDialog.xaml
     /// </summary>
-    public partial class StudyControl : UserControl
+    public partial class StudyDialog : Window
     {
         private Cards? _cardsToStudy;
         private readonly Cards? _cards;
 
-        public StudyControl(Cards? cards)
+        public StudyDialog(Cards? cards)
         {
             InitializeComponent();
+
             _cards = cards;
             BuildListToStudy(cards);
         }
-
         private void BuildListToStudy(Cards? cards)
         {
             var configuration = Configuration.LoadFromFile();
@@ -70,7 +79,6 @@ namespace YSMemiCardsApp.Controls
                 }
             }
         }
-
         private void StartStudySession_Click(object sender, RoutedEventArgs e)
         {
             StartStudySessionButton.IsEnabled = false;

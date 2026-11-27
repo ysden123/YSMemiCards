@@ -15,6 +15,5 @@
                 <MenuItem Header="Study" Click="StudyMenuItemClick"/>
             </MenuItem>
         </Menu>
-        <ContentControl x:Name="CC"/>
     </DockPanel>
 </Window>

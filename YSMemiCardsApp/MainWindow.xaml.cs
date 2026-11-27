@@ -9,7 +9,7 @@ namespace YSMemiCardsApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Cards _cards;
+        private Cards _cards;
         public MainWindow()
         {
             InitializeComponent();
@@ -25,12 +25,22 @@ namespace YSMemiCardsApp
 
         private void CardstMenuItemClick(object sender, RoutedEventArgs e)
         {
-            CC.Content = new CardListControl(_cards);
+            new CardListDialog(_cards)
+            {
+                Owner = Window.GetWindow(this)
+            }.ShowDialog();
+
+            _cards = Cards.LoadFromFile() ?? new Cards();
         }
 
         private void StudyMenuItemClick(object sender, RoutedEventArgs e)
         {
-            CC.Content = new StudyControl(_cards);
+            new StudyDialog(_cards)
+            {
+                Owner = Window.GetWindow(this)
+            }.ShowDialog();
+
+            _cards = Cards.LoadFromFile() ?? new Cards();
         }
 
         private void ConfigurationMenuItemClick(object sender, RoutedEventArgs e)
